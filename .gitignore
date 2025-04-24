@@ -1,0 +1,6 @@
+.luarc.json
+*.bak
+*.log
+libs/wow_stubs.lua
+.vscode/
+.idea/
