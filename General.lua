@@ -1,4 +1,3 @@
-
 local LibEvent = LibStub:GetLibrary("LibEvent.7000")
 
 local DEAD = DEAD
@@ -19,11 +18,11 @@ local function ColorStatusBar(self, value)
         end
         local r, g, b
         if (UnitIsPlayer(unit)) then
-            r, g, b = GetClassColor(select(2,UnitClass(unit)))
+            r, g, b = GetClassColor(select(2, UnitClass(unit)))
         else
             r, g, b = GameTooltip_UnitColor(unit)
             if (g == 0.6) then g = 0.9 end
-            if (r==1 and g==1 and b==1) then r, g, b = 0, 0.9, 0.1 end
+            if (r == 1 and g == 1 and b == 1) then r, g, b = 0, 0.9, 0.1 end
         end
         self:SetStatusBarColor(r, g, b)
     elseif (value and addon.db.general.statusbarColor == "smooth") then
@@ -33,7 +32,7 @@ end
 
 LibEvent:attachEvent("VARIABLES_LOADED", function()
     --CloseButton
-    if (ItemRefCloseButton and not IsAddOnLoaded("ElvUI")) then
+    if (ItemRefCloseButton and (IsAddOnLoaded == nil or not IsAddOnLoaded("ElvUI"))) then
         ItemRefCloseButton:SetSize(14, 14)
         ItemRefCloseButton:SetPoint("TOPRIGHT", -4, -4)
         ItemRefCloseButton:SetNormalTexture("Interface\\Buttons\\UI-StopButton")
@@ -61,11 +60,11 @@ LibEvent:attachEvent("VARIABLES_LOADED", function()
         elseif (not self.forceHideText) then
             local cur = UnitHealth("mouseover") or 1
             local max = UnitHealthMax("mouseover") or 1
-            if(self.TextString) then
+            if (self.TextString) then
                 self.TextString:SetText(AbbreviateLargeNumbers(cur) .. " / " .. AbbreviateLargeNumbers(max))
             end
         elseif (self.forceHideText) then
-            if(self.TextString) then
+            if (self.TextString) then
                 self.TextString:SetText("")
             end
         end
@@ -104,10 +103,11 @@ end)
 
 LibEvent:attachTrigger("tooltip:show", function(self, tip)
     if (tip ~= GameTooltip) then return end
-    LibEvent:trigger("tooltip.statusbar.position", addon.db.general.statusbarPosition, addon.db.general.statusbarOffsetX, addon.db.general.statusbarOffsetY)
+    LibEvent:trigger("tooltip.statusbar.position", addon.db.general.statusbarPosition, addon.db.general.statusbarOffsetX,
+        addon.db.general.statusbarOffsetY)
     local w = GameTooltipStatusBar.TextString:GetWidth() + 10
     if (GameTooltipStatusBar:IsShown() and w > tip:GetWidth()) then
-        tip:SetMinimumWidth(w+2)
+        tip:SetMinimumWidth(w + 2)
         tip:Show()
     end
 end)
